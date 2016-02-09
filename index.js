@@ -11,7 +11,7 @@ See our example project
 */
 var express = require('express');
 var bodyParser = require('body-parser');
-var Parse = require('parse/node').Parse;
+var Parse = global.Parse || require('parse/node').Parse;
 var Request = require('request');
 
 var Routes = {
