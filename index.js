@@ -126,21 +126,6 @@ var define = function(functionName, handler) {
   Routes['function'].push(functionName);
 };
 
-var httpRequest = function(options) {
-  var promise = new Parse.Promise();
-  Request(options, function(error, response, body) {
-    if (error) {
-      console.log('Parse.Cloud.httpRequest failed with error:');
-      console.log(error);
-      promise.reject(response);
-    } else {
-      response.text = body;
-      promise.resolve(response);
-    }
-  });
-  return promise;
-}
-
 function inflateObjectsToClassNames(methodToWrap) {
   return function(objectOrClassName, handler) {
     if (objectOrClassName === null || !objectOrClassName.className) {
@@ -155,7 +140,8 @@ Parse.Cloud.afterSave = inflateObjectsToClassNames(afterSave);
 Parse.Cloud.beforeDelete = inflateObjectsToClassNames(beforeDelete);
 Parse.Cloud.afterDelete = inflateObjectsToClassNames(afterDelete);
 Parse.Cloud.define = define;
-Parse.Cloud.httpRequest = httpRequest;
+Parse.Cloud.httpRequest = require("./lib/httpRequest");
+
 Parse.Cloud.job = function() { console.log('Running jobs is not supported in parse-cloud-express'); }
 
 module.exports = {
